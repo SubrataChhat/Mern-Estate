@@ -36,3 +36,41 @@ export const signin = async (req, res, next) => {
     next(error);
   }
 };
+
+export const google = async (req, res, next) => {
+  try {
+    const userExists = await User.findOne({ email: req.body.email });
+    if (userExists) {
+      const token = jwt.sign({ id: userExists?._id }, process.env.JWT_SECRET);
+      const { password: pass, ...rest } = userExists?._doc;
+      res
+        .cookie("access_token", token, { httpOnly: true })
+        .status(200)
+        .json(rest);
+    } else {
+      // for creating 16 digits password
+      const generatedPassword =
+        // toString will create password from A-Z and 0-9 and with slice we are getting the it's last 8 digits
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+      const newUser = new User({
+        username:
+          req.body.name.split(" ").join("").toLowerCase() +
+          Math.random().toString(36).slice(-4),
+        email: req?.body?.email,
+        password: hashedPassword,
+        avatar: req?.body?.photo,
+      });
+      await newUser.save();
+      const token = jwt.sign({ id: newUser?._id }, process.env.JWT_SECRET);
+      const { password: pass, ...rest } = newUser?._doc;
+      res
+        .cookie("access_token", token, { httpOnly: true })
+        .status(200)
+        .json(rest);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
