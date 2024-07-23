@@ -9,12 +9,12 @@ export const test = (req, res) => {
 };
 
 export const updateUser = async (req, res, next) => {
-  const { username, email, password, avatar } = req?.body;
+  const { username, email, avatar } = req?.body;
   if (req?.user?.id !== req?.params?.id)
     return next(errorHandler(401, "You can only update your own account!"));
   try {
-    if (password) {
-      password = bcryptjs.hashSync(password, 10);
+    if (req.body.password) {
+      req.body.password = bcryptjs.hashSync(req.body.password, 10);
     }
 
     const UpdatedUser = await User.findByIdAndUpdate(
@@ -24,7 +24,7 @@ export const updateUser = async (req, res, next) => {
         $set: {
           username,
           email,
-          password,
+          password: req?.body?.password,
           avatar,
         },
       },
@@ -32,9 +32,9 @@ export const updateUser = async (req, res, next) => {
       { new: true }
     );
 
-    const { password: pass, ...rest } = UpdatedUser?._doc;
+    const { password, ...rest } = UpdatedUser?._doc;
 
-    res?.status(200)?.json({ rest });
+    res?.status(200)?.json(rest);
   } catch (error) {
     next(error);
   }
