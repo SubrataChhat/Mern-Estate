@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateUserFailure,
@@ -182,6 +183,12 @@ const Profile = () => {
         >
           {loading ? "Loading..." : "Update"}
         </button>
+        <Link
+          to={"/create-listing"}
+          className="bg-green-700 text-white text-center p-3 uppercase rounded-lg hover:opacity-95"
+        >
+          create listing
+        </Link>
       </form>
       <div className="flex justify-between mt-5">
         <span
