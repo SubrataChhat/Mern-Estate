@@ -58,6 +58,12 @@ export const getUserListing = async (req, res, next) => {
   if (req?.user?.id === req?.params?.id) {
     try {
       const listings = await Listing.find({ userRef: req.params.id });
+      res.set(
+        "Cache-Control",
+        "no-store, no-cache, must-revalidate, proxy-revalidate"
+      );
+      res.set("Pragma", "no-cache");
+      res.set("Expires", "0");
       res.status(200).json(listings);
     } catch (error) {
       next(error);
