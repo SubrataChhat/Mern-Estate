@@ -7,6 +7,7 @@ import About from "./pages/About.jsx/About";
 import Header from "./components/Header/Header";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import CreateListing from "./pages/CreateListing/CreateListing";
+import UpdateListing from "./pages/UpdateListing/UpdateListing";
 
 function App() {
   return (
@@ -21,6 +22,10 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/create-listing" element={<CreateListing />} />
+            <Route
+              path="/update-listing/:listingId"
+              element={<UpdateListing />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>
