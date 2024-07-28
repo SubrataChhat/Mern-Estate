@@ -361,25 +361,23 @@ const UpdateListing = () => {
           </p>
           {formData?.imageUrls.length > 0 &&
             formData?.imageUrls.map((urls, index) => (
-              <>
-                <div
-                  className="flex justify-between p-3 border items-center"
-                  key={urls}
+              <div
+                className="flex justify-between p-3 border items-center"
+                key={urls}
+              >
+                <img
+                  className="w-20 h-20 object-contain rounded-lg"
+                  src={urls}
+                  alt="listing image"
+                />
+                <button
+                  type="button"
+                  className="p-3 text-red-700 text-sm rounded-lg uppercase hover:opacity-75"
+                  onClick={() => handleRemoveImage(index)}
                 >
-                  <img
-                    className="w-20 h-20 object-contain rounded-lg"
-                    src={urls}
-                    alt="listing image"
-                  />
-                  <button
-                    type="button"
-                    className="p-3 text-red-700 text-sm rounded-lg uppercase hover:opacity-75"
-                    onClick={() => handleRemoveImage(index)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </>
+                  Delete
+                </button>
+              </div>
             ))}
           <button
             disabled={loading || uploading}
