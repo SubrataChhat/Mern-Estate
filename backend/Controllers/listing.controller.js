@@ -67,18 +67,18 @@ export const getListings = async (req, res, next) => {
     let offer = req.query.offer;
 
     // Default behaviour of the search
-    if (offer === undefined || offer === false) {
+    if (offer === undefined || offer === "false") {
       // check/search from the database
       offer = { $in: [false, true] };
     }
 
     let furnished = req.query.furnished;
-    if (furnished === undefined || furnished === false) {
+    if (furnished === undefined || furnished === "false") {
       furnished = { $in: [false, true] };
     }
 
     let parking = req.query.parking;
-    if (parking === undefined || parking === false) {
+    if (parking === undefined || parking === "false") {
       parking = { $in: [false, true] };
     }
 
@@ -107,6 +107,12 @@ export const getListings = async (req, res, next) => {
       .limit(limit)
       .skip(startIndex);
 
+    res.set(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate"
+    );
+    res.set("Pragma", "no-cache");
+    res.set("Expires", "0");
     return res.status(200).json(listings);
   } catch (error) {
     next(error);
