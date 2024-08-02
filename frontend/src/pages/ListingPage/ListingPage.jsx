@@ -112,8 +112,11 @@ const ListingPage = () => {
               </p>
               {listing?.offer && (
                 <p className="bg-green-700 w-full max-w-[200px] text-white text-center p-1 rounded-md">
-                  ₹{+listing?.regularPrice - +listing?.discountPrice}
-                  <span className="px-1">discount</span>
+                  ₹{" "}
+                  {(
+                    +listing?.regularPrice - +listing?.discountPrice
+                  ).toLocaleString("en-IN")}
+                  <span className="px-1">Off</span>
                 </p>
               )}
             </div>
@@ -121,27 +124,41 @@ const ListingPage = () => {
               <span className="font-semibold text-black">Description - </span>
               {listing?.description}
             </p>
-            <ul className="my-1 flex flex-wrap items-center gap-4 sm:gap-8 text-green-700 font-semibold text-sm">
-              <li className="flex items-center gap-2 whitespace-nowrap">
+            <ul className="my-1 flex flex-wrap items-center gap-4 sm:gap-8 font-semibold text-sm">
+              <li className="flex items-center text-green-700 gap-2 whitespace-nowrap">
                 <FaBed className="text-lg" />
                 {listing?.bedrooms > 1
                   ? `${listing?.bedrooms} beds`
                   : `${listing?.bedrooms} bed`}
               </li>
-              <li className="flex items-center gap-2 whitespace-nowrap">
+              <li className="flex items-center text-green-700 gap-2 whitespace-nowrap">
                 <FaBath className="text-lg" />
                 {listing?.bathrooms > 1
                   ? `${listing?.bathrooms} baths`
                   : `${listing?.bathrooms} bath`}
               </li>
-              <li className="flex items-center gap-2 whitespace-nowrap">
-                <FaParking className="text-lg" />
-                {listing?.parking ? "Parking spot" : "No Parking"}
-              </li>
-              <li className="flex items-center gap-2 whitespace-nowrap">
-                <FaChair className="text-lg" />
-                {listing?.furnished ? "Furnished" : "Unfurnished"}
-              </li>
+              {listing?.parking ? (
+                <li className="flex items-center text-green-700 gap-2 whitespace-nowrap">
+                  <FaParking className="text-lg" />
+                  {listing?.parking ? "Parking spot" : "No Parking"}
+                </li>
+              ) : (
+                <li className="flex items-center text-red-700 gap-2 whitespace-nowrap">
+                  <FaParking className="text-lg" />
+                  {listing?.parking ? "Parking spot" : "No Parking"}
+                </li>
+              )}
+              {listing?.furnished ? (
+                <li className="flex items-center text-green-700 gap-2 whitespace-nowrap">
+                  <FaChair className="text-lg" />
+                  {listing?.furnished ? "Furnished" : "Unfurnished"}
+                </li>
+              ) : (
+                <li className="flex items-center text-red-700 gap-2 whitespace-nowrap">
+                  <FaChair className="text-lg" />
+                  {listing?.furnished ? "Furnished" : "Unfurnished"}
+                </li>
+              )}
             </ul>
             {currentUser &&
               listing.userRef !== currentUser?._id &&

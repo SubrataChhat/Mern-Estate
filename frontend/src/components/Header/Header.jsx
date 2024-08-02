@@ -51,7 +51,7 @@ const Header = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button type="button">
+          <button>
             <FaSearch className="text-slate-500" />
           </button>
         </form>
